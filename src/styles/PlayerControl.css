@@ -154,6 +154,15 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.player-sream {
+  font-size: 0.75rem;
+  color: var(--text-muted, #666);
+  margin-bottom: 0.5rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .player-bitrate {
   font-size: 0.75rem;

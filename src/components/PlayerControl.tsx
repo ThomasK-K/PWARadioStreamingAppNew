@@ -6,6 +6,7 @@ import { radioModeState } from "../state/radioMode";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { songUpdateInterval } from "../state/songInterval";
 import { safeGetItem } from "../utils/storageUtils";
+import { actStream } from "../state/actStream";
 
 // Default placeholder album art
 const DEFAULT_ALBUM_ART = "https://placehold.co/300x300?text=No+Album+Art";
@@ -19,9 +20,14 @@ interface IconButtonProps {
   disabled?: boolean;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ icon, label, onPress, disabled }) => (
+const IconButton: React.FC<IconButtonProps> = ({
+  icon,
+  label,
+  onPress,
+  disabled,
+}) => (
   <div className="control-button">
-    <button 
+    <button
       className="button-icon"
       onClick={onPress}
       disabled={disabled}
@@ -37,6 +43,7 @@ export const PlayerControl: React.FC = () => {
   const [selectedUrl] = useRecoilState(selectedMpdUrlState);
   const [radioMode] = useRecoilState(radioModeState);
   const [songInterval] = useRecoilState(songUpdateInterval);
+  const [actStreamState, setActStreamState] = useRecoilState(actStream);
   const [volume, setVolume] = useState(() => {
     return safeGetItem<number>("volume", 50);
   });
@@ -53,20 +60,14 @@ export const PlayerControl: React.FC = () => {
     volume: number;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const {
-    play,
-    pause,
-    stop,
-    currentUrl,
-    error: audioError,
-  } = useAudioPlayer();
+  const { play, pause, stop, currentUrl, error: audioError } = useAudioPlayer();
 
   useEffect(() => {
     let intervalId: number | undefined;
-    
+
     const getCurrentSong = async () => {
       if (!selectedUrl) return;
-      
+
       try {
         // Fetch current song data
         const response = await fetch(`${selectedUrl}/currentsong`, {
@@ -74,7 +75,7 @@ export const PlayerControl: React.FC = () => {
         });
         const res = await response.json();
         setSongData(res.data);
-        
+
         // Fetch player state
         const response1 = await fetch(`${selectedUrl}`, {
           method: "GET",
@@ -92,10 +93,13 @@ export const PlayerControl: React.FC = () => {
 
     // Initial fetch
     getCurrentSong();
-    
+
     // Setup interval for updates
-    intervalId = window.setInterval(getCurrentSong, songInterval * 1000 || 5000);
-    
+    intervalId = window.setInterval(
+      getCurrentSong,
+      songInterval * 1000 || 5000
+    );
+
     // Cleanup function
     return () => {
       if (intervalId) window.clearInterval(intervalId);
@@ -153,31 +157,36 @@ export const PlayerControl: React.FC = () => {
   return (
     <div className="player-container">
       <h2 className="player-title">Musiksteuerung</h2>
-      
+
       {songData && (
         <div className="player-info">
           <div className="player-song-info">
             <p>
               <strong>{radioMode}</strong> Player
             </p>
-            <img 
+            <img
               src={songData.album || DEFAULT_ALBUM_ART}
-              alt={`Album Art: ${songData.albumName || 'Unknown Album'}`}
+              alt={`Album Art: ${songData.albumName || "Unknown Album"}`}
               className="player-album-art"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = DEFAULT_ALBUM_ART;
               }}
             />
-            <p className="player-song-album">Album: {songData.albumName || 'Unbekannt'}</p>
+            <p className="player-song-album">
+              Album: {songData.albumName || "Unbekannt"}
+            </p>
             <p className="player-song-title">
-              {songData.artist || 'Unbekannter Künstler'} - {songData.title || 'Unbekannter Titel'}
+              {songData.artist || "Unbekannter Künstler"} -{" "}
+              {songData.title || "Unbekannter Titel"}
             </p>
           </div>
         </div>
       )}
-      
+
       {playerState && (
-        <div className="player-status">Status: {playerState.state || 'Unbekannt'}</div>
+        <div className="player-status">
+          Status: {playerState.state || "Unbekannt"}
+        </div>
       )}
 
       <div className="player-controls">
@@ -200,7 +209,7 @@ export const PlayerControl: React.FC = () => {
           disabled={isLoading}
         />
       </div>
-      
+
       <div className="volume-control">
         <i className="material-icons">volume_down</i>
         <input
@@ -216,30 +225,27 @@ export const PlayerControl: React.FC = () => {
         <i className="material-icons">volume_up</i>
         <span className="volume-value">{volume}</span>
       </div>
-
       {selectedUrl && (
-        <div className="player-url">
-          URL: {selectedUrl}
+        <div>
+          <div className="player-url">URL: {selectedUrl}</div>
+          <div className="player-stream">Stream: {actStreamState}</div>
         </div>
       )}
-      
       {playerState?.bitrate && (
-        <div className="player-bitrate">
-          Bitrate: {playerState.bitrate}
-        </div>
+        <div className="player-bitrate">Bitrate: {playerState.bitrate}</div>
       )}
-      
+
       {(error || audioError) && (
-        <div className="player-error">
-          {error || audioError}
-        </div>
+        <div className="player-error">{error || audioError}</div>
       )}
     </div>
   );
 };
 
 // Web-only player component for direct streaming
-export const WebRadioPlayer: React.FC<{stationUrl?: string}> = ({ stationUrl }) => {
+export const WebRadioPlayer: React.FC<{ stationUrl?: string }> = ({
+  stationUrl,
+}) => {
   const [volume, setVolume] = useState(() => {
     return safeGetItem<number>("volume", 50);
   });
@@ -282,9 +288,9 @@ export const WebRadioPlayer: React.FC<{stationUrl?: string}> = ({ stationUrl }) 
   return (
     <div className="player-container">
       <h2 className="player-title">Web Radio Player</h2>
-      
+
       <div className="player-status">
-        Status: {isPlaying ? 'Playing' : (audioIsLoading ? 'Loading' : 'Stopped')}
+        Status: {isPlaying ? "Playing" : audioIsLoading ? "Loading" : "Stopped"}
       </div>
 
       <div className="player-controls">
@@ -307,7 +313,7 @@ export const WebRadioPlayer: React.FC<{stationUrl?: string}> = ({ stationUrl }) 
           disabled={!isPlaying && !audioIsLoading}
         />
       </div>
-      
+
       <div className="volume-control">
         <i className="material-icons">volume_down</i>
         <input
@@ -325,15 +331,11 @@ export const WebRadioPlayer: React.FC<{stationUrl?: string}> = ({ stationUrl }) 
       </div>
 
       {currentUrl && (
-        <div className="player-url">
-          Aktueller Stream: {currentUrl}
-        </div>
+        <div className="player-url">Aktueller Stream: {currentUrl}</div>
       )}
-      
+
       {(error || audioError) && (
-        <div className="player-error">
-          {error || audioError}
-        </div>
+        <div className="player-error">{error || audioError}</div>
       )}
     </div>
   );
