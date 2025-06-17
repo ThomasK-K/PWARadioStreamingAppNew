@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import TabContainer from './components/TabContainer'
 import type { TabData } from './components/TabContainer'
-import Sender from './components/Sender'
+import SenderList from './components/SenderList'
+import { setupUpdateFlow } from './service-worker/updateFlow'
+
 
 import Settings from './components/Settings'
 import { PlayerControl } from './components/PlayerControl'
@@ -11,6 +13,8 @@ import { fetchMPDPlaylists } from '../src/data/fetchMPDPlaylists';
 import { useRecoilState } from 'recoil';
 import { selectedMpdUrlState } from "../src/state/mpdUrls";
 import { useLocalStorageCleanup } from '../src/utils/localStorageCleanup';
+import './styles/UpdateNotification.css' 
+
 
 function App() {
   // Bereinige localStorage beim App-Start
@@ -22,6 +26,10 @@ function App() {
   
   const [selectedUrl] = useRecoilState(selectedMpdUrlState);
   const [stations, setStations] = useState<RadioStation[]>([]);
+    useEffect(() => {
+    // Setup the update flow when the app mounts
+    setupUpdateFlow()
+  }, [])
   
   useEffect(() => {
     console.log('App selectedUrl:', selectedUrl);
@@ -53,7 +61,7 @@ function App() {
 
   // Aktiver Tab
   const [activeTabId, setActiveTabId] = useState<string>(() => {
-    return localStorage.getItem('activeTab') || 'counter'
+    return localStorage.getItem('activeTab') || 'sender'
   })
 
   useEffect(() => {
@@ -104,7 +112,7 @@ function App() {
     {
       id: 'sender',
       label: 'Sender',
-      content: <Sender stations={stations} />,
+      content: <SenderList stations={stations} />,
     },
     {
       id: 'player',

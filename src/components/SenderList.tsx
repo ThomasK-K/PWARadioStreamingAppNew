@@ -4,11 +4,11 @@ import { StationList } from "./StationList";
 import { StreamList } from "./StreamList";
 import type { RadioStation } from "../types/types";
 
-interface CounterProps {
+interface SenderProps {
   stations: RadioStation[];
 }
 
-const Counter: React.FC<CounterProps> = (props) => {
+const SenderList: React.FC<SenderProps> = (props) => {
   const { stations } = props;
   const [selectedStation, setSelectedStation] = useState<RadioStation | undefined>(undefined);
   
@@ -26,7 +26,7 @@ const Counter: React.FC<CounterProps> = (props) => {
   };
 
   return (
-    <div className="counter-component">
+    <div className="sender-component">
       {selectedStation ? (
         <StreamList station={selectedStation} onBack={handleBackToStations} />
       ) : (
@@ -36,4 +36,4 @@ const Counter: React.FC<CounterProps> = (props) => {
   );
 };
 
-export default Counter;
+export default SenderList;
