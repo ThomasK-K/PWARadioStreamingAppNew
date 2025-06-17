@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Entwicklungsumgebung
+  app-dev:
+    image: node:20-alpine
+    container_name: counterapp-dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      # Anstelle eines benannten Volumes verwenden wir einen anonymen Volume-Mount
+      - /app/node_modules
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 3000"
+    networks:
+      - counterapp-network
+
+  # Produktionsumgebung mit Build-Stufe
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    container_name: counterapp-prod
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - counterapp-network
+
+# Netzwerk-Definition
+networks:
+  counterapp-network:
+    driver: bridge
