@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import TabContainer from './components/TabContainer'
 import type { TabData } from './components/TabContainer'
-import Counter from './components/Counter'
-import Countdown from './components/Countdown'
+import Sender from './components/Sender'
+
 import Settings from './components/Settings'
+import { PlayerControl } from './components/PlayerControl'
 import type { RadioStation } from '../src/types/types';
 import { fetchMPDPlaylists } from '../src/data/fetchMPDPlaylists';
 import { useRecoilState } from 'recoil';
@@ -101,15 +102,16 @@ function App() {
   // Tab-Definition
   const tabs: TabData[] = [
     {
-      id: 'counter',
-      label: 'Zähler',
-      content: <Counter stations={stations} />,
+      id: 'sender',
+      label: 'Sender',
+      content: <Sender stations={stations} />,
     },
     {
-      id: 'countdown',
-      label: 'Countdown',
-      content: <Countdown />
+      id: 'player',
+      label: 'Player',
+      content: <PlayerControl />
     },
+ 
     {
       id: 'settings',
       label: 'Einstellungen',

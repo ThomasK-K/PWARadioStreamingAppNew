@@ -4,7 +4,7 @@ services:
   # Entwicklungsumgebung
   app-dev:
     image: node:20-alpine
-    container_name: counterapp-dev
+    container_name: streamapp-dev
     working_dir: /app
     volumes:
       - .:/app
@@ -14,9 +14,9 @@ services:
       - "3001:3000"
     environment:
       - NODE_ENV=development
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 3000"
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 3001"
     networks:
-      - counterapp-network
+      - streamapp-network
 
   # Produktionsumgebung mit Build-Stufe
   app-prod:
@@ -25,16 +25,16 @@ services:
       dockerfile: Dockerfile
       args:
         - NODE_ENV=production
-    container_name: counterapp-prod
+    container_name: streamapp-prod
     restart: unless-stopped
     ports:
-      - "8081:80"
+      - "8080:80"
     environment:
       - NODE_ENV=production
     networks:
-      - counterapp-network
+      - streamapp-network
 
 # Netzwerk-Definition
 networks:
-  counterapp-network:
+  streamapp-network:
     driver: bridge

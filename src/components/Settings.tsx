@@ -133,7 +133,7 @@ const Settings: React.FC = () => {
             className="settings-select"
           >
             <option value="mpd">MPD Player</option>
-            <option value="radio">Web Radio</option>
+            <option value="local">Lokal</option>
           </select>
         </div>
       </div>

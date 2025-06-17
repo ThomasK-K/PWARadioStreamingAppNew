@@ -4,7 +4,6 @@ import type { RadioStation, RadioStream } from '../types/types';
 export function parseM3UToStations(m3u: string): RadioStation[] {
   const lines = m3u.split(/\r?\n/);
   const stations: RadioStation[] = [];
-  let currentStation: RadioStation | null = null;
   let streamName = '';
   let streamUrl = '';
   let idCounter = 1;
@@ -36,12 +35,15 @@ export function parseM3UToStations(m3u: string): RadioStation[] {
         stations.push(station);
         idCounter++;
       }
-      const stream: RadioStream = {
-        id: `${station.id}-${station.streams.length + 1}`,
-        name: streamLabel,
-        url: streamUrl,
-      };
-      station.streams.push(stream);
+      
+      if (station && station.streams) {
+        const stream: RadioStream = {
+          id: `${station.id}-${station.streams.length + 1}`,
+          name: streamLabel,
+          url: streamUrl,
+        };
+        station.streams.push(stream);
+      }
     }
   }
   return stations;

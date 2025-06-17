@@ -27,7 +27,7 @@ case "$1" in
     # Stoppe zuerst alle laufenden Container
     docker-compose down
     # Dann starte den Produktionscontainer
-    docker-compose up --build app-prod
+    docker-compose up -d app-prod
     ;;
   
   build)

@@ -35,13 +35,16 @@ export default defineConfig({
       }
     })
   ],
-  // Add source map configuration
+  // Source map configuration
   build: {
     sourcemap: true,
-    // Ensure we don't generate broken source maps
     rollupOptions: {
       output: {
-        sourcemapExcludeSources: false
+        sourcemapExcludeSources: false,
+        // Make source maps more reliable
+        sourcemapPathTransform: (relativeSourcePath) => {
+          return relativeSourcePath.replace(/^\.\.\//, '');
+        }
       }
     }
   },
