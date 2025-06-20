@@ -8,12 +8,22 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+       workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,mp3}']
+      },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'Counter PWA',
-        short_name: 'Counter',
-        description: 'Eine einfache Counter Progressive Web App',
-        theme_color: '#ffffff',
+        id: './',
+        start_url: './',
+        name: 'RadioStreaming PWA',
+        short_name: 'RadioStreaming',
+        description: 'Eine einfache Radio Streaming Progressive Web App',
+        theme_color: '#000000',
+        background_color: '#ffffff',
+        lang: 'de',
+        dir: 'ltr',
+        display: 'standalone',
+        scope: './',
         icons: [
           {
             src: 'pwa-192x192.png',

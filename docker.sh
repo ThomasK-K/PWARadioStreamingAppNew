@@ -7,13 +7,13 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}CounterApp Docker Helper${NC}"
+echo -e "${BLUE}StreamingApp Docker Helper${NC}"
 echo "========================="
 echo ""
 
 case "$1" in
   dev)
-    echo -e "${GREEN}Starte CounterApp in der Entwicklungsumgebung...${NC}"
+    echo -e "${GREEN}Starte StreamingApp in der Entwicklungsumgebung...${NC}"
     echo -e "Die App wird unter ${YELLOW}http://localhost:3001${NC} verfügbar sein."
     # Stoppe zuerst alle laufenden Container
     docker-compose down
@@ -22,7 +22,7 @@ case "$1" in
     ;;
   
   prod)
-    echo -e "${GREEN}Starte CounterApp in der Produktionsumgebung...${NC}"
+    echo -e "${GREEN}Starte StreamingApp in der Produktionsumgebung...${NC}"
     echo -e "Die App wird unter ${YELLOW}http://localhost:8081${NC} verfügbar sein."
     # Stoppe zuerst alle laufenden Container
     docker-compose down

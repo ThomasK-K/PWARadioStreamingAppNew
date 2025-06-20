@@ -43,7 +43,7 @@ export const PlayerControl: React.FC = () => {
   const [selectedUrl] = useRecoilState(selectedMpdUrlState);
   const [radioMode] = useRecoilState(radioModeState);
   const [songInterval] = useRecoilState(songUpdateInterval);
-  const [actStreamState, setActStreamState] = useRecoilState(actStream);
+  const [actStreamState] = useRecoilState(actStream);
   const [volume, setVolume] = useState(() => {
     return safeGetItem<number>("volume", 50);
   });

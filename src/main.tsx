@@ -10,14 +10,7 @@ import { cleanupInvalidStorageItems } from "./utils/storageUtils";
 // Cleanup any invalid localStorage items before app initialization
 cleanupInvalidStorageItems();
 
-// Benutzerdefiniertes Event für App-Updates
-// const swUpdateEvent = new Event("sw-update-available");
 
-// Service Worker für PWA registrieren
-
-
-// @ts-ignore - Ignoriere die Warnung für updateSW
-console.log("Service Worker registriert:", !!updateSW);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

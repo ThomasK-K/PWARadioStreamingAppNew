@@ -5,7 +5,7 @@ import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { useRecoilState } from "recoil";
 import { selectedMpdUrlState } from "../state/mpdUrls";
 import { radioModeState } from "../state/radioMode";
-import { actStream } from "../state/actStream";
+// import { actStream } from "../state/actStream";
 import { fetchMPDStreams } from "../data/fetchMPDPlaylists";
 
 interface StreamListProps {
@@ -17,7 +17,7 @@ export const StreamList: React.FC<StreamListProps> = ({ station, onBack }) => {
   const [streams, setStreams] = useState<RadioStream[]>([]);
   const [selectedUrl] = useRecoilState(selectedMpdUrlState);
   const [radioMode] = useRecoilState(radioModeState);
-  const [actStreamState, setActStreamState] = useRecoilState(actStream);
+  // const [setActStreamState] = useRecoilState(actStream);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { isPlaying, currentUrl, play } = useAudioPlayer();
@@ -55,7 +55,7 @@ export const StreamList: React.FC<StreamListProps> = ({ station, onBack }) => {
         await play(stream.url);
       } else if (radioMode === "mpd") {
         if (currentUrl !== stream.url) {
-          setActStreamState(stream.name);
+          // setActStreamState(stream.name);
 
           await fetch(`${selectedUrl}/playsong?name=${stream.url}`, {
             method: "GET",

@@ -1,6 +1,6 @@
-# CounterApp PWA - Installation Guide
+# Radio Streaming App PWA - Installation Guide
 
-Diese Anleitung beschreibt die Installation und Einrichtung der CounterApp Progressive Web App sowohl für Entwickler als auch für Benutzer.
+Diese Anleitung beschreibt die Installation und Einrichtung der PWARadioStreamingApp Progressive Web App sowohl für Entwickler als auch für Benutzer.
 
 ## Für Entwickler
 
@@ -14,8 +14,8 @@ Diese Anleitung beschreibt die Installation und Einrichtung der CounterApp Progr
 
 ```bash
 # Repository klonen
-git clone https://github.com/username/counterapp.git
-cd counterapp
+git clone https://github.com/ThomasK-K/PWARadioStreamingAppNew.git
+cd PWARadioStreamingAppNew
 
 # Abhängigkeiten installieren
 npm install
@@ -30,8 +30,8 @@ Falls Sie das Projekt von Grund auf neu erstellen möchten:
 
 ```bash
 # Vite-Projekt mit React und TypeScript initialisieren
-npx create-vite@latest my-counterapp --template react-ts
-cd my-counterapp
+npx create-vite@latest PWARadioStreamingApp --template react-ts
+cd PWARadioStreamingApp
 
 # PWA-Support hinzufügen
 npm install vite-plugin-pwa -D
