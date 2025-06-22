@@ -16,36 +16,36 @@ case "$1" in
     echo -e "${GREEN}Starte StreamingApp in der Entwicklungsumgebung...${NC}"
     echo -e "Die App wird unter ${YELLOW}http://localhost:3001${NC} verfügbar sein."
     # Stoppe zuerst alle laufenden Container
-    docker-compose down
+    docker-compose -f docker-compose-https.yml down
     # Dann starte den Entwicklungscontainer
-    docker-compose up app-dev
+    docker-compose -f docker-compose-https.yml up app-dev
     ;;
   
   prod)
     echo -e "${GREEN}Starte StreamingApp in der Produktionsumgebung...${NC}"
-    echo -e "Die App wird unter ${YELLOW}http://localhost:8081${NC} verfügbar sein."
+    echo -e "Die App wird unter ${YELLOW}http://localhost:8080${NC} verfügbar sein."
     # Stoppe zuerst alle laufenden Container
-    docker-compose down
+    docker-compose -f docker-compose-https.yml down
     # Dann starte den Produktionscontainer
-    docker-compose up -d app-prod
+    docker-compose -f docker-compose-https.yml up -d app-prod
     ;;
   
   build)
     echo -e "${GREEN}Baue Docker-Images...${NC}"
-    docker-compose build
+    docker-compose -f docker-compose-https.yml build
     echo -e "${GREEN}Build abgeschlossen.${NC}"
     ;;
   
   stop)
     echo -e "${YELLOW}Stoppe alle laufenden Container...${NC}"
-    docker-compose down
+    docker-compose -f docker-compose-https.yml down
     echo -e "${GREEN}Alle Container wurden gestoppt.${NC}"
     ;;
   
   clean)
     echo -e "${YELLOW}Räume Docker-Ressourcen auf...${NC}"
     # Stoppe alle Container und entferne sie
-    docker-compose down
+    docker-compose -f docker-compose-https.yml down
     # Entferne alle verwaisten Volumes
     echo -e "${YELLOW}Entferne verwaiste Volumes...${NC}"
     docker volume prune -f

@@ -3,7 +3,6 @@ import './App.css'
 import TabContainer from './components/TabContainer'
 import type { TabData } from './components/TabContainer'
 import SenderList from './components/SenderList'
-import { setupUpdateFlow } from './service-worker/updateFlow'
 
 
 import Settings from './components/Settings'
@@ -26,10 +25,6 @@ function App() {
   
   const [selectedUrl] = useRecoilState(selectedMpdUrlState);
   const [stations, setStations] = useState<RadioStation[]>([]);
-    useEffect(() => {
-    // Setup the update flow when the app mounts
-    setupUpdateFlow()
-  }, [])
   
   useEffect(() => {
     console.log('App selectedUrl:', selectedUrl);

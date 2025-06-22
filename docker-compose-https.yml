@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Entwicklungsumgebung
+  app-dev:
+    image: node:20-alpine
+    container_name: radioapp-dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      # Anstelle eines benannten Volumes verwenden wir einen anonymen Volume-Mount
+      - /app/node_modules
+      # Zertifikate für HTTPS in der Entwicklung
+      - ./certs:/app/certs
+    ports:
+      - "3001:3000"
+      - "3002:443"  # HTTPS-Port
+    environment:
+      - NODE_ENV=development
+      - HTTPS=true
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 3000"
+    networks:
+      - radioapp-network
+
+  # Produktionsumgebung mit Build-Stufe
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile-https
+      args:
+        - NODE_ENV=production
+    container_name: radioapp-prod
+    restart: unless-stopped
+    ports:
+      - "8080:80"    # HTTP (für Weiterleitung zu HTTPS)
+      - "443:443"  # HTTPS
+    volumes:
+      - ./dist:/usr/share/nginx/html
+      - ./nginx-https.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl  # SSL-Zertifikate
+    environment:
+      - NODE_ENV=production
+    networks:
+      - radioapp-network
+
+# Netzwerk-Definition
+networks:
+  radioapp-network:
+    driver: bridge
