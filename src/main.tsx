@@ -13,8 +13,6 @@ cleanupInvalidStorageItems();
 // Initialize service worker early
 setupUpdateFlow();
 
-
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
