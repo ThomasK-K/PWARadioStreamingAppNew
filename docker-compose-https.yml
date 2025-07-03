@@ -11,14 +11,17 @@ services:
       # Anstelle eines benannten Volumes verwenden wir einen anonymen Volume-Mount
       - /app/node_modules
       # Zertifikate für HTTPS in der Entwicklung
-      - ./certs:/app/certs
+      - ./ssl:/app/ssl
     ports:
-      - "3001:3000"
-      - "3002:443"  # HTTPS-Port
+      - "3001:3000"  # HTTP Port
+      - "3002:3443"  # HTTPS-Port
     environment:
       - NODE_ENV=development
       - HTTPS=true
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 3000"
+      - VITE_USE_SSL=true
+      - SSL_CRT_FILE=/app/ssl/radioapp.crt
+      - SSL_KEY_FILE=/app/ssl/radioapp.key
+    command: sh -c "npm install && npm run build && npm run dev:https"
     networks:
       - radioapp-network
 

@@ -47,8 +47,9 @@ if [ ! -f "./ssl/rootCA/rootCA.key" ] || [ ! -f "./ssl/rootCA/rootCA.crt" ]; the
             DNS.1 = localhost
             IP.1 = 127.0.0.1
             IP.2 = 192.168.10.113
-            IP.3 = 192.168.10.161
-            IP.4 = 192.168.10.162
+            IP.3 = 192.168.10.152
+            IP.4 = 192.168.10.161
+            IP.5 = 192.168.10.162
 EOF
 
 else
@@ -74,8 +75,9 @@ subjectAltName = @alt_names
 DNS.1 = localhost
 IP.1 = 127.0.0.1
 IP.2 = 192.168.10.113
-IP.3 = 192.168.10.161
-IP.4 = 192.168.10.162
+IP.3 = 192.168.10.152
+IP.4 = 192.168.10.161
+IP.5 = 192.168.10.162
 EOF
 
 # Sign the server certificate with our Root CA

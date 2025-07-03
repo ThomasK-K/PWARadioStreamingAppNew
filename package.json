@@ -1,13 +1,16 @@
 {
-  "name": "PWARadioStreamingApp",
+  "name": "pwa-radio-streaming-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host --port 8080",
+    "dev:https": "vite --host --port 3000",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-     "preview": "tsc -b && vite build && vite preview --host --port 8080"
+    "preview": "tsc -b && vite build && vite preview --host --port 8080",
+    "preview:https": "tsc -b && vite build && VITE_USE_SSL=true vite preview --host --port 3002",
+    "pack": "gzip -r dist.zip dist"
   },
   "dependencies": {
     "react": "^18.2.0",

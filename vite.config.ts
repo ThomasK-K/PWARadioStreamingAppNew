@@ -68,18 +68,49 @@ export default defineConfig({
   server: {
     sourcemapIgnoreList: false,
     https: (() => {
+      // Check for environment variables first (highest priority)
+      if (process.env.SSL_CRT_FILE && process.env.SSL_KEY_FILE) {
+        console.log('Using SSL certificates from environment variables');
+        try {
+          return {
+            cert: fs.readFileSync(process.env.SSL_CRT_FILE),
+            key: fs.readFileSync(process.env.SSL_KEY_FILE),
+          };
+        } catch (e) {
+          console.warn('Error reading SSL certificates from environment variables:', e);
+        }
+      }
+
+      // Then check for SSL folder (second priority)
+      try {
+        if (fs.existsSync("./ssl/radioapp.crt") && fs.existsSync("./ssl/radioapp.key")) {
+          console.log('Using SSL certificates from ./ssl folder');
+          return {
+            cert: fs.readFileSync("./ssl/radioapp.crt"),
+            key: fs.readFileSync("./ssl/radioapp.key"),
+          };
+        }
+      } catch (e) {
+        console.warn('Error reading SSL certificates from ./ssl folder:', e);
+      }
+
+      // Finally check for certs folder (fallback)
       try {
         if (fs.existsSync("./certs/radioapp.pem")) {
+          console.log('Using SSL certificates from PEM file');
           return {
             key: fs.readFileSync("./certs/radioapp.pem"),
             cert: fs.readFileSync("./certs/radioapp.pem"),
           };
         }
-        return undefined;
       } catch (e) {
-        console.warn('SSL certificates not found, HTTPS will not be enabled in dev mode');
-        return undefined;
+        console.warn('Error reading SSL certificates from PEM file:', e);
       }
+
+      console.warn('SSL certificates not found, HTTPS will not be enabled in dev mode');
+      return undefined;
     })(),
+    port: 3000,
+    host: true,
   },
 });

@@ -15,6 +15,7 @@ dist-ssr
 dummy
 *.local
 ssl
+certs
 
 # Editor directories and files
 .vscode/*

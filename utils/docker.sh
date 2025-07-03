@@ -20,10 +20,28 @@ case "$1" in
     # Dann starte den Entwicklungscontainer
     docker-compose -f docker-compose-https.yml up app-dev
     ;;
+
+  ps)
+    echo -e "${GREEN}Starte StreamingApp in der Entwicklungsumgebung...${NC}"
+    echo -e "Die App wird unter ${YELLOW}http://localhost:3001${NC} verfügbar sein."
+    # show runnning containers
+    echo -e "${YELLOW}Laufende Container:${NC}"
+    docker-compose -f docker-compose-https.yml ps
+    ;;
   
+  top)
+    echo -e "${GREEN}Starte StreamingApp in der Entwicklungsumgebung...${NC}"
+    echo -e "Die App wird unter ${YELLOW}http://localhost:3001${NC} verfügbar sein."
+    # show runnning containers
+    echo -e "${YELLOW}Laufende Container:${NC}"
+    docker-compose -f docker-compose-https.yml top
+    #cho -e "${YELLOW}Logs der App:${NC}"
+    #docker-compose -f docker-compose-https.yml logs -f app-dev
+    ;;
+
   prod)
     echo -e "${GREEN}Starte StreamingApp in der Produktionsumgebung...${NC}"
-    echo -e "Die App wird unter ${YELLOW}http://localhost:8080${NC} verfügbar sein."
+    echo -e "Die App wird unter ${YELLOW}https://localhost:8080${NC} verfügbar sein."
     # Stoppe zuerst alle laufenden Container
     docker-compose -f docker-compose-https.yml down
     # Dann starte den Produktionscontainer
